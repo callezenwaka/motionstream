@@ -1,4 +1,4 @@
-# sante
+# Santé
 The cap project for HF AI Agent course.
 
 # Open-Source AI Models for Healthcare
