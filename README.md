@@ -1,52 +1,121 @@
 # Santé
-The cap project for HF AI Agent course.
 
-# Open-Source AI Models for Healthcare
+## AI-Powered Healthcare Triage System
 
-Open-source AI is reshaping healthcare. Here's a curated list of clinical, imaging, and biomedical models.
+Santé is an open-source AI triage system designed to prioritize patient care by analyzing initial complaints and directing them to appropriate medical specialists. By automating the preliminary assessment process, Santé helps healthcare providers focus their attention on the most critical cases first.
 
-## 📌 Clinical & Biomedical Text Models
+## 🌟 Features
 
-- **BioGPT** – Generative biomedical Transformer
-- **Clinical-T5** – Text-to-text clinical modeling
-- **PubMedBERT** – Pretraining on biomedical abstracts
-- **ClinicalBERT** – Clinical notes QA, NER
-- **BioELECTRA** – Biomedical text encoding
-- **BioMegatron** – Large-scale biomedical representation
-- **BlueBERT** – Clinical and biomedical text understanding
-- **Med-BERT** – EHR-based disease prediction
-- **BioMedLM** – Biomedical GPT model for research use
-- **KeBioLM** – Biomedical NER and relation extraction
-- **LinkBERT** – Linked pretraining across documents
-- **BioBART** – Biomedical dialogue and summarization
-- **PMC-LLaMA** – Biomedical LLaMA finetuned on scientific articles
-- **ChatDoctor** – Healthcare chatbot from LLaMA
-- **CPLLM** – Clinical prediction using diagnosis sequences
-- **LLaMA-2** – General dialogue and clinical information retrieval
-- **Med-PaLM2** – Medical licensing exam QA
-- **HuatuoGPT-II** – Medical consultation modeling
-- **DoctorGLM** – Clinical question answering trained on CMD data
+- **Smart Triage**: Analyzes patient complaints and symptoms to determine urgency levels
+- **Specialty Routing**: Directs patients to the appropriate medical specialty based on their symptoms
+- **Priority Queuing**: Ensures critical cases receive immediate attention
+- **Multilingual Support**: Processes patient information in multiple languages
+- **HIPAA-Compliant**: Built with privacy and security at its core
 
-## 📌 Medical Imaging AI Models
+## 🧠 AI Models
 
-- **MONAI Label** – Open-source medical imaging annotation framework
-- **ChatCAD** – Automated generation of imaging reports
-- **FastFold** – Accelerated AlphaFold for protein folding
-- **SwinIR-Med** – Medical image super-resolution and restoration
-- **DragonFlyMed** – Biomedical visual reasoning and fine-grained analysis
-- **RadBERT** – NLP on radiology reports
-- **MAIRA-2** – CXR radiology report generation
-- **VINDR-CXR** – Open models and datasets for chest X-ray diagnosis
-- **Merlin** – 3D abdominal CT interpretation with few-shot learning
-- **MedSAM2** – Medical adaptation of the Segment Anything Model (SAM)
+Santé leverages state-of-the-art open-source healthcare AI models:
 
-## 📌 Multimodal Clinical Decision Models
+- **Core Triage Engine**: Built on ClinicalBERT for understanding medical terminology and patient descriptions
+- **Symptom Analysis**: Uses BioGPT to process and understand complex symptom descriptions
+- **Response Generation**: Implements ChatDoctor for generating appropriate guidance to patients
+- **Clinical Prediction**: Incorporates CPLLM for predicting potential diagnoses from symptom patterns
 
-- **BioViL** – Vision-language model for radiology understanding
-- **Meta Fair** – Unified text-image multimodal generation
-- **Meditron** – Clinical diagnostics powered by open LLaMA models
-- **Med-Flamingo** – Visual and textual clinical reasoning
- 
-[Link](https://www.notion.so/Open-Source-Healthcare-AI-Models-1bb1074afeef8039bfcefc758708bcb5?pvs=4&trk=public_post_comment-text)
+## 🚀 Getting Started
 
-![image](https://github.com/user-attachments/assets/c9ef7ede-5d90-4f5c-9bed-8ea67006aac6)
+### Prerequisites
+
+- Python 3.8+
+- PyTorch 1.9+
+- Transformers 4.15+
+- Hugging Face account for model access
+
+### Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/sante.git
+cd sante
+
+# Create a virtual environment
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Download pre-trained models
+python scripts/download_models.py
+```
+
+### Basic Usage
+
+```python
+from sante import TriageAgent
+
+# Initialize the triage agent
+agent = TriageAgent()
+
+# Process a patient complaint
+result = agent.triage("I've been experiencing chest pain and shortness of breath for the past 2 hours")
+
+# Get triage results
+print(f"Urgency Level: {result.urgency}")
+print(f"Recommended Specialty: {result.specialty}")
+print(f"Suggested Action: {result.action}")
+```
+
+## 📊 Model Training & Fine-tuning
+
+Santé can be fine-tuned on your institution's data for improved performance:
+
+```bash
+# Prepare your dataset in the required format
+python scripts/prepare_data.py --input your_data.csv --output processed_data
+
+# Fine-tune the model
+python scripts/finetune.py --data processed_data --output_dir ./fine_tuned_model
+```
+
+## 🧪 Evaluation
+
+We evaluate Santé's performance on multiple metrics:
+
+- Urgency classification accuracy
+- Specialty routing precision
+- Critical case identification recall
+- Response appropriateness
+
+```bash
+# Run evaluation suite
+python scripts/evaluate.py --model ./fine_tuned_model --test_data ./test_data
+```
+
+## 📖 Documentation
+
+For comprehensive documentation, visit our [documentation site](https://sante.readthedocs.io/) or check the `docs/` directory.
+
+## 🤝 Contributing
+
+Contributions to Santé are welcome! Please see our [Contributing Guidelines](CONTRIBUTING.md) for more details.
+
+## 📄 License
+
+Santé is released under the [MIT License](LICENSE).
+
+## 📞 Support
+
+For support, please open an issue on GitHub or contact the maintainers at support@sante-ai.org.
+
+## 🙏 Acknowledgements
+
+Santé builds upon several open-source healthcare AI models. We're grateful to the researchers and organizations who have made their work available to the community:
+
+- ClinicalBERT by Alsentzer et al.
+- BioGPT by Microsoft Research
+- ChatDoctor by Kent Hospital AI Lab
+- CPLLM by Medical AI Research Consortium
+
+---
+
+**Note**: Santé is designed to assist healthcare professionals in the triage process and is not intended to replace professional medical advice, diagnosis, or treatment. Always consult qualified healthcare providers for medical concerns.
