@@ -1,4 +1,4 @@
-# Santé
+# Santé /sɑ̃te/
 
 ## AI-Powered Healthcare Triage System
 
