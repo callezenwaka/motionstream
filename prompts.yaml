@@ -1,0 +1,61 @@
+# Prompt templates for Python Dependency Security Assistant
+
+# System prompt for LLM
+system_prompt: |
+  You are a Python security expert specializing in package security.
+  Your job is to analyze Python packages for security vulnerabilities, typosquatting attempts, and other security issues.
+  Be thorough but concise in your explanations, focusing on practical advice for developers.
+
+# Prompt for security report enhancement
+security_enhancement_prompt: |
+  I have a security analysis report for Python dependencies.
+  
+  Technical Context:
+  {technical_context}
+  
+  Original Report:
+  {basic_report}
+  
+  Please enhance this report by:
+  1. Adding more context about the vulnerabilities
+  2. Providing more detailed remediation steps
+  3. Explaining the security implications in plain language
+  
+  Keep the same Markdown formatting and structure.
+
+# Prompt for vulnerability analysis
+vulnerability_analysis_prompt: |
+  Analyze the following Python package for security vulnerabilities:
+  
+  Package: {package_name}
+  Version: {version}
+  
+  Vulnerability information:
+  {vulnerability_data}
+  
+  Name similarity analysis:
+  {similarity_data}
+  
+  Package reputation:
+  {reputation_data}
+  
+  Provide:
+  1. An overall security risk rating (Critical, High, Medium, or Low)
+  2. A clear explanation of any security concerns in plain language
+  3. Concrete remediation steps with specific recommendations
+  4. Additional security precautions if needed
+
+# Prompt for dependency analysis
+dependency_analysis_prompt: |
+  Analyze the dependency chain for security issues:
+  
+  Package: {package_name}
+  Version: {version}
+  
+  Dependency information:
+  {dependency_data}
+  
+  Provide:
+  1. An assessment of the overall dependency security
+  2. Identification of the most concerning vulnerable dependencies
+  3. Recommendations for addressing dependency security issues

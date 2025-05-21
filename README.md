@@ -1,121 +1,237 @@
 # Santé /sɑ̃te/
 
-## AI-Powered Healthcare Triage System
+A comprehensive security scanning tool for Python dependencies that detects vulnerabilities, identifies typosquatting attempts, and visualizes dependency chains.
 
-Santé is an open-source AI triage system designed to prioritize patient care by analyzing initial complaints and directing them to appropriate medical specialists. By automating the preliminary assessment process, Santé helps healthcare providers focus their attention on the most critical cases first.
+![Security Report Example](https://via.placeholder.com/800x400?text=Security+Report+Example)
 
-## 🌟 Features
+## Features
 
-- **Smart Triage**: Analyzes patient complaints and symptoms to determine urgency levels
-- **Specialty Routing**: Directs patients to the appropriate medical specialty based on their symptoms
-- **Priority Queuing**: Ensures critical cases receive immediate attention
-- **Multilingual Support**: Processes patient information in multiple languages
-- **HIPAA-Compliant**: Built with privacy and security at its core
+- **Vulnerability Detection**: Scans packages for known security vulnerabilities (CVEs)
+- **Typosquatting Protection**: Identifies malicious packages with names similar to popular libraries
+- **Dependency Chain Analysis**: Visualizes complete dependency trees with vulnerability highlighting
+- **Multiple File Format Support**: Works with requirements.txt, Pipfile, poetry.lock, environment.yml, and more
+- **Automated Monitoring**: Watches dependency files for changes and triggers security scans
+- **Comprehensive Reports**: Generates detailed security reports with remediation recommendations
 
-## 🧠 AI Models
-
-Santé leverages state-of-the-art open-source healthcare AI models:
-
-- **Core Triage Engine**: Built on ClinicalBERT for understanding medical terminology and patient descriptions
-- **Symptom Analysis**: Uses BioGPT to process and understand complex symptom descriptions
-- **Response Generation**: Implements ChatDoctor for generating appropriate guidance to patients
-- **Clinical Prediction**: Incorporates CPLLM for predicting potential diagnoses from symptom patterns
-
-## 🚀 Getting Started
-
-### Prerequisites
-
-- Python 3.8+
-- PyTorch 1.9+
-- Transformers 4.15+
-- Hugging Face account for model access
-
-### Installation
+## Installation
 
 ```bash
-# Clone the repository
-git clone https://github.com/yourusername/sante.git
-cd sante
+# Install directly from GitHub
+pip install git+https://github.com/yourusername/Python_Dependency_Security_Assistant.git
 
-# Create a virtual environment
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-
-# Install dependencies
+# Or clone and install locally
+git clone https://github.com/yourusername/Python_Dependency_Security_Assistant.git
+cd Python_Dependency_Security_Assistant
 pip install -r requirements.txt
-
-# Download pre-trained models
-python scripts/download_models.py
 ```
 
-### Basic Usage
+## Quick Start
 
-```python
-from sante import TriageAgent
-
-# Initialize the triage agent
-agent = TriageAgent()
-
-# Process a patient complaint
-result = agent.triage("I've been experiencing chest pain and shortness of breath for the past 2 hours")
-
-# Get triage results
-print(f"Urgency Level: {result.urgency}")
-print(f"Recommended Specialty: {result.specialty}")
-print(f"Suggested Action: {result.action}")
-```
-
-## 📊 Model Training & Fine-tuning
-
-Santé can be fine-tuned on your institution's data for improved performance:
+### Scan a Package
 
 ```bash
-# Prepare your dataset in the required format
-python scripts/prepare_data.py --input your_data.csv --output processed_data
+# Scan a specific package
+python app.py requests
 
-# Fine-tune the model
-python scripts/finetune.py --data processed_data --output_dir ./fine_tuned_model
+# Scan a specific version
+python app.py requests --version 2.25.0
+
+# Include dependency chain analysis
+python app.py requests --check-deps
 ```
 
-## 🧪 Evaluation
-
-We evaluate Santé's performance on multiple metrics:
-
-- Urgency classification accuracy
-- Specialty routing precision
-- Critical case identification recall
-- Response appropriateness
+### Scan a Dependency File
 
 ```bash
-# Run evaluation suite
-python scripts/evaluate.py --model ./fine_tuned_model --test_data ./test_data
+# Scan a requirements file
+python app.py --file requirements.txt
+
+# Scan a conda environment file
+python app.py --file environment.yml
+
+# Scan any supported dependency file
+python app.py --file Pipfile
 ```
 
-## 📖 Documentation
+### Watch for Changes
 
-For comprehensive documentation, visit our [documentation site](https://sante.readthedocs.io/) or check the `docs/` directory.
+```bash
+# Monitor the current directory for dependency file changes
+python watcher.py
 
-## 🤝 Contributing
+# Monitor a specific directory
+python watcher.py --directory /path/to/project
 
-Contributions to Santé are welcome! Please see our [Contributing Guidelines](CONTRIBUTING.md) for more details.
+# Scan immediately when started
+python watcher.py --scan
+```
 
-## 📄 License
+## LLM Enhancement (Optional)
 
-Santé is released under the [MIT License](LICENSE).
+The tool works completely without an LLM, but can be enhanced with one:
 
-## 📞 Support
+```bash
+# Run with default settings (no LLM)
+python app.py --file requirements.txt
 
-For support, please open an issue on GitHub or contact the maintainers at support@sante-ai.org.
+# Use a specific model
+python app.py --file requirements.txt --model mistralai/Mistral-7B-Instruct-v0.2
 
-## 🙏 Acknowledgements
+# Use a local model file
+python app.py --file requirements.txt --model ./models/my-local-model
 
-Santé builds upon several open-source healthcare AI models. We're grateful to the researchers and organizations who have made their work available to the community:
+# Use Ollama
+python app.py --file requirements.txt --model llama2
 
-- ClinicalBERT by Alsentzer et al.
-- BioGPT by Microsoft Research
-- ChatDoctor by Kent Hospital AI Lab
-- CPLLM by Medical AI Research Consortium
+# Explicitly disable LLM enhancement
+python app.py --file requirements.txt --no-llm
+
+# Basic usage (no LLM)
+python app.py requests
+
+# With specific model
+python app.py requests --model mistralai/Mistral-7B-Instruct-v0.2
+
+# With Ollama model
+python app.py requests --model llama2
+
+# Explicitly disable LLM
+python app.py requests --no-llm
+```
+
+## LLM Enhancement (Optional)
+
+This tool can use an LLM to enhance security reports:
+
+```bash
+# Run with default settings (no LLM)
+python app.py requests
+
+# Use a specific model
+python app.py requests --model mistralai/Mistral-7B-Instruct-v0.2
+
+# Use a local Ollama model
+python app.py requests --model llama2
+
+# Explicitly disable LLM
+python app.py requests --no-llm
+
+### Web Interface
+
+```bash
+# Launch the web interface
+python Gradio_UI.py
+```
+
+![Gradio UI Example](https://via.placeholder.com/800x400?text=Gradio+UI+Example)
+
+## Security Features
+
+### Vulnerability Detection
+
+The tool scans packages against multiple security databases:
+- National Vulnerability Database (NVD)
+- Open Source Vulnerabilities (OSV) database
+- PyPI security advisories
+
+Vulnerabilities are categorized by severity (Critical, High, Medium, Low) with detailed information and remediation steps.
+
+### Typosquatting Protection
+
+Detects potentially malicious packages with names similar to popular libraries:
+- Text similarity analysis
+- Keyboard-adjacency typo detection
+- Package reputation assessment
+
+This helps protect against supply-chain attacks like the "vibe coding" security issue where hackers publish malicious packages with commonly mistyped names.
+
+### Dependency Chain Analysis
+
+Visualizes the complete dependency tree of a package with:
+- Color-coded vulnerability indicators
+- Path tracing to vulnerable dependencies
+- Transitive vulnerability detection
+
+This reveals security issues hidden deep in dependency chains that might otherwise go unnoticed.
+
+## Configuration
+
+You can customize the tool's behavior by creating a `config.yaml` file:
+
+```yaml
+# Basic configuration example
+features:
+  vulnerability_scan: true
+  name_similarity: true
+  package_reputation: true
+  dependency_chain: true
+
+security:
+  nvd:
+    enabled: true
+    api_key: "your-api-key"  # Optional
+
+watcher:
+  interval: 10  # Check every 10 seconds
+
+output:
+  report_dir: "./my_security_reports"
+```
+
+See the [full configuration options](config/default_config.yaml) for more details.
+
+## Report Example
+
+```markdown
+# Security Analysis: requests==2.25.0
+
+Scanned on 2023-05-21 15:30:45
+
+## Summary
+
+⚠️ **HIGH SECURITY ISSUES FOUND**
+
+* Found **2** vulnerabilities in **1** packages
+* Severity breakdown:
+  * Critical: **0**
+  * High: **1**
+  * Medium: **1**
+  * Low: **0**
+
+## Vulnerability Details
+
+### requests (version 2.25.0)
+
+#### ⚠️ CVE-2023-32681 (High)
+
+**Summary**: URL Parsing Vulnerability in Requests
+
+**Details**: URL parsing in Requests before 2.31.0 may cause a maliciously crafted URL to be parsed differently by different components.
+
+**Fixed in versions**: 2.31.0
+
+**References**:
+* https://github.com/psf/requests/security/advisories/GHSA-j8r2-6x86-q33q
+
+#### Remediation
+
+Upgrade to version **2.31.0** or later.
+
+```
+pip install requests>=2.31.0
+```
+```
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Acknowledgments
+
+- National Vulnerability Database for security data
+- Open Source Vulnerabilities database
+- The Python packaging community
 
 ---
 
-**Note**: Santé is designed to assist healthcare professionals in the triage process and is not intended to replace professional medical advice, diagnosis, or treatment. Always consult qualified healthcare providers for medical concerns.
+*Python Dependency Security Assistant is not affiliated with PyPI or the Python Software Foundation.*

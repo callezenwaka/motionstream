@@ -1,0 +1,27 @@
+{
+  "name": "Python Dependency Security Assistant",
+  "description": "An agent that scans Python packages for security vulnerabilities, typosquatting, and other security issues",
+  "model": "mistralai/Mistral-7B-Instruct-v0.2",
+  "tools": [
+    {
+      "name": "vulnerability_scan",
+      "description": "Scans a Python package for known security vulnerabilities"
+    },
+    {
+      "name": "dependency_chain",
+      "description": "Analyzes the complete dependency tree of a package"
+    },
+    {
+      "name": "name_similarity",
+      "description": "Detects potential typosquatting attempts by checking package name similarity"
+    },
+    {
+      "name": "package_reputation",
+      "description": "Checks the reputation and trustworthiness of a package"
+    },
+    {
+      "name": "final_answer",
+      "description": "Formats and presents the security analysis results"
+    }
+  ]
+}
