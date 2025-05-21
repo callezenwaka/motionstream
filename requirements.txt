@@ -1,9 +1,9 @@
-requests>=2.28.2
-pyyaml>=6.0
-networkx>=3.0
-matplotlib>=3.7.1
-packaging>=23.0
-gradio>=3.32.0
-transformers>=4.30.0
-torch>=2.0.0
-difflib>=3.10.0
+requests
+pyyaml
+networkx
+matplotlib
+packaging
+gradio
+transformers
+torch
+# difflib

@@ -123,6 +123,26 @@ python app.py requests --no-llm
 python Gradio_UI.py
 ```
 
+## Test with pytest
+```sh
+pip install pytest
+
+# Run all tests
+pytest tests/
+
+# Run specific test file
+pytest tests/test_summary.py
+
+# Run specific test file
+pytest tests/test_llm_utils.py
+
+# Run with verbose output
+pytest -v tests/test_summary.py
+
+# Run with verbose output
+pytest -v tests/
+```
+
 ![Gradio UI Example](https://via.placeholder.com/800x400?text=Gradio+UI+Example)
 
 ## Security Features
