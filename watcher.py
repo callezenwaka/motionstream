@@ -1,6 +1,5 @@
 # watcher.py
 import time
-import os
 import hashlib
 import subprocess
 import argparse

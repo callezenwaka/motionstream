@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sante"
+version = "0.1.1"
+description = "Python Package Security Scanner"
+authors = [{name = "Callis Ezenwaka", email = "callisezenwaka@outlook.com"}]
+requires-python = ">=3.10"
+dependencies = [
+    "requests==2.32.3",
+    "colorama==0.4.6",
+    "packaging==25.0",
+    "pyyaml==6.0.2",
+    "networkx==3.4.2",
+    "matplotlib==3.10.3",
+    "gradio==5.31.0",
+    "transformers==4.52.3",
+    "torch==2.7.0",
+    "toml==0.10.2",
+    "ollama==0.4.8",
+    "smolagents==1.16.1",
+]
+
+[project.scripts]
+sante = "cli:main"
+
+[tool.setuptools]
+packages = ["tools"]
+py-modules = ["cli", "app", "watcher"]

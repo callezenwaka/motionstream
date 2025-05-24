@@ -1,16 +1,11 @@
 # tools/dependency_chain.py
-import networkx as nx
-import matplotlib.pyplot as plt
-import matplotlib
 import io
 import base64
-from packaging import version
+import matplotlib
 import pkg_resources
-import subprocess
-import sys
-import os
-import json
-from pathlib import Path
+import networkx as nx
+import matplotlib.pyplot as plt
+from packaging import version
 from .vulnerability_scan import scan_vulnerabilities
 
 def analyze_dependency_chain(package_name, package_version=None):

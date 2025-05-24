@@ -1,4 +1,5 @@
 # tests/test_llm_utils.py
+import builtins
 import pytest
 from tools.llm_utils import load_model, OllamaModel, LMStudioModel
 
@@ -29,19 +30,6 @@ def test_load_model_with_specified_name(mocker):
     assert mock_pipeline.call_args[1]['model'] == "test-model"
     assert model == "test_pipeline"
 
-# def test_load_model_from_environment(mocker, monkeypatch):
-#     """Test loading a model from an environment variable."""
-#     monkeypatch.setenv("SECURITY_ASSISTANT_MODEL", "env-test-model")
-#     # Mock the transformers.pipeline function
-#     mock_pipeline = mocker.patch('transformers.pipeline', return_value="env_test_pipeline")
-
-#     model = load_model(model_name=None, no_llm=False)
-
-#     # Check that pipeline was called with the correct model name
-#     mock_pipeline.assert_called_once()
-#     assert mock_pipeline.call_args[1]['model'] == "env-test-model"
-#     assert model == "env_test_pipeline"
-
 def test_load_model_from_environment(mocker, monkeypatch):
     """Test loading a model from an environment variable."""
     monkeypatch.setenv("SECURITY_ASSISTANT_MODEL", "env-test-model")
@@ -62,38 +50,6 @@ def test_load_model_from_environment(mocker, monkeypatch):
     assert mock_pipeline.call_args[1]['model'] == "env-test-model"
     assert model == "env_test_pipeline"
 
-# def test_load_model_from_config(mocker, temp_config_file, monkeypatch):
-#     """Test loading a model from config file."""
-#     # Ensure environment variable is not set for this test
-#     monkeypatch.delenv("SECURITY_ASSISTANT_MODEL", raising=False)
-
-#     # Create a mock for the pipeline function
-#     mock_pipeline = mocker.MagicMock(return_value="config_test_pipeline")
-    
-#     # Mock the transformers module with our pipeline mock
-#     mock_transformers = mocker.MagicMock()
-#     mock_transformers.pipeline = mock_pipeline
-    
-#     # Mock the import to return our mock module
-#     mocker.patch.dict('sys.modules', {'transformers': mock_transformers})
-    
-#     # Use the path from the fixture and monkey patch the open function
-#     # Note: This depends on how tools.llm_utils loads the config file
-#     def mock_open_func(file_path, *args, **kwargs):
-#         if file_path == "config.yaml":  # Match the actual file name in llm_utils.py
-#             return open(temp_config_file, *args, **kwargs)
-#         return open(file_path, *args, **kwargs)
-    
-#     mocker.patch('builtins.open', mock_open_func)
-
-#     model = load_model(model_name=None, no_llm=False)
-
-#     # Check that pipeline was called with the correct model name
-#     mock_pipeline.assert_called_once()
-#     assert mock_pipeline.call_args[0][0] == "text-generation"
-#     assert mock_pipeline.call_args[1]['model'] == "test-model-from-config"
-#     assert model == "config_test_pipeline"
-
 def test_load_model_from_config(mocker, temp_config_file, monkeypatch):
     """Test loading a model from config file."""
     # Ensure environment variable is not set for this test
@@ -104,17 +60,25 @@ def test_load_model_from_config(mocker, temp_config_file, monkeypatch):
     mock_pipeline = mocker.MagicMock(return_value="config_test_pipeline")
     mock_transformers.pipeline = mock_pipeline
     
-    # Mock the import statement
+    # Mock the import statement *before* load_model is called
+    # This ensures that when load_model tries "from transformers import pipeline", it gets our mock
     mocker.patch.dict('sys.modules', {'transformers': mock_transformers})
     
+    # Store the original open function
+    original_open = builtins.open
+
     # Use the path from the fixture and monkey patch the open function
     def mock_open_func(file_path, *args, **kwargs):
         if file_path == "config.yaml":  # Match the actual file name in llm_utils.py
-            return open(temp_config_file, *args, **kwargs)
-        return open(file_path, *args, **kwargs)
+            return original_open(temp_config_file, *args, **kwargs)
+        return original_open(file_path, *args, **kwargs) # Call the original open here
     
     mocker.patch('builtins.open', mock_open_func)
     
+    # Write a dummy config file for the test
+    with original_open(temp_config_file, "w") as f: # Use original_open to write to the temp file
+        f.write("llm:\n  model: test-model-from-config\n")
+
     model = load_model(model_name=None, no_llm=False)
     
     # Check that pipeline was called with the correct model name
@@ -122,30 +86,6 @@ def test_load_model_from_config(mocker, temp_config_file, monkeypatch):
     assert mock_pipeline.call_args[0][0] == "text-generation"
     assert mock_pipeline.call_args[1]['model'] == "test-model-from-config"
     assert model == "config_test_pipeline"
-
-# def test_load_model_from_config(mocker, temp_config_file, monkeypatch):
-#     """Test loading a model from config file."""
-#     # Ensure environment variable is not set for this test
-#     monkeypatch.delenv("SECURITY_ASSISTANT_MODEL", raising=False)
-
-#     # Mock the transformers.pipeline function
-#     mock_pipeline = mocker.patch('transformers.pipeline', return_value="config_test_pipeline")
-    
-#     # Use the path from the fixture and monkey patch the open function
-#     # Note: This depends on how tools.llm_utils loads the config file
-#     def mock_open_func(file_path, *args, **kwargs):
-#         if file_path == "config.yaml":  # Match the actual file name in llm_utils.py
-#             return open(temp_config_file, *args, **kwargs)
-#         return open(file_path, *args, **kwargs)
-    
-#     mocker.patch('builtins.open', mock_open_func)
-
-#     model = load_model(model_name=None, no_llm=False)
-
-#     # Check that pipeline was called with the correct model name
-#     mock_pipeline.assert_called_once()
-#     assert mock_pipeline.call_args[1]['model'] == "test-model-from-config"
-#     assert model == "config_test_pipeline"
 
 def test_ollama_model(mocker):
     """Test the OllamaModel wrapper."""

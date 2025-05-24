@@ -75,6 +75,7 @@ def check_package_reputation(package_name):
     return {
         "package": package_name,
         "author": author,
+        "author_email": author_email,
         "package_age": metrics["package_age"],
         "release_frequency": metrics["release_frequency"],
         "download_count": metrics["download_count"],

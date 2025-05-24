@@ -6,4 +6,4 @@ packaging
 gradio
 transformers
 torch
-# difflib
+colorama
