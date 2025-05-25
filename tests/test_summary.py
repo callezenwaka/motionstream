@@ -1,6 +1,6 @@
 # tests/test_summary.py
 import pytest
-from tools.summary import generate_basic_report, format_security_report, enhance_report_with_llm
+from tools.security_summary import generate_basic_report, format_security_report, enhance_report_with_llm
 
 def test_generate_basic_report_with_vulnerable_package(vulnerable_package_result):
     """Test basic report generation for a vulnerable package."""

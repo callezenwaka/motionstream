@@ -1,7 +1,7 @@
 # tests/test_llm_utils.py
 import builtins
 import pytest
-from tools.llm_utils import load_model, OllamaModel, LMStudioModel
+from bin.llm_utils import load_model, OllamaModel, LMStudioModel
 
 # No need for path manipulation - pytest handles this automatically
 
