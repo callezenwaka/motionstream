@@ -1,7 +1,7 @@
 import os
 import json
 import yaml
-from smolagents import CodeAgent, InferenceClientModel
+from smolagents import CodeAgent, InferenceClientModel, DuckDuckGoSearchTool
 
 # Import our custom security tools
 from tools.vulnerability_scan import ScanTool
@@ -181,7 +181,7 @@ def create_security_agent():
             final_answer_tool = FinalAnswerTool()
             return CodeAgent(
                 model=model,
-                tools=[final_answer_tool],
+                tools=[final_answer_tool, DuckDuckGoSearchTool],
                 max_steps=4,
                 verbosity_level=1,
             )

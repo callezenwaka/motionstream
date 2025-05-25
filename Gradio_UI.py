@@ -2,7 +2,7 @@
 # coding=utf-8
 # Security Analysis Gradio UI
 # Based on HuggingFace smolagents Gradio implementation
-# Customized for Python package security analysis
+# Simplified version for Python package security analysis
 
 import mimetypes
 import os
@@ -121,7 +121,7 @@ def pull_messages_from_step(
             step_footnote += step_duration
         step_footnote = f"""<span style="color: #bbbbc2; font-size: 12px;">{step_footnote}</span> """
         yield gr.ChatMessage(role="assistant", content=f"{step_footnote}")
-        yield gr.ChatMessage(role="assistant", content="---")
+        yield gr.ChatMessage(role="assistant", content="-----")
 
 
 def stream_to_gradio(
@@ -177,7 +177,7 @@ def stream_to_gradio(
 
 
 class GradioUI:
-    """Security Analysis Gradio Interface - One-line interface to launch your security agent in Gradio"""
+    """A one-line interface to launch your security agent in Gradio"""
 
     def __init__(self, agent: MultiStepAgent, file_upload_folder: str | None = None):
         if not _is_package_available("gradio"):
@@ -185,12 +185,12 @@ class GradioUI:
                 "Please install 'gradio' extra to use the GradioUI: `pip install 'smolagents[gradio]'`"
             )
         self.agent = agent
-        self.file_upload_folder = file_upload_folder or "./uploads"
-        if not os.path.exists(self.file_upload_folder):
-            os.makedirs(self.file_upload_folder, exist_ok=True)
+        self.file_upload_folder = file_upload_folder
+        if self.file_upload_folder is not None:
+            if not os.path.exists(file_upload_folder):
+                os.makedirs(file_upload_folder, exist_ok=True)
 
     def interact_with_agent(self, prompt, messages):
-        """FIXED: Simplified interaction handling"""
         import gradio as gr
 
         messages.append(gr.ChatMessage(role="user", content=prompt))
@@ -241,14 +241,10 @@ class GradioUI:
                     elif file_ext == '.csv':
                         mime_type = "text/csv"
         except Exception as e:
-            return gr.Textbox(f"Error determining file type: {e}", visible=True), file_uploads_log
+            return gr.Textbox(f"Error: {e}", visible=True), file_uploads_log
 
         if mime_type not in allowed_file_types:
-            allowed_extensions = ['.txt', '.py', '.toml', '.yml', '.yaml', '.json', '.csv']
-            return gr.Textbox(
-                f"File type not allowed for security analysis. Allowed types: {', '.join(allowed_extensions)}", 
-                visible=True
-            ), file_uploads_log
+            return gr.Textbox("File type disallowed", visible=True), file_uploads_log
 
         # Sanitize file name
         original_name = os.path.basename(file.name)
@@ -260,141 +256,73 @@ class GradioUI:
         file_path = os.path.join(self.file_upload_folder, sanitized_name)
         shutil.copy(file.name, file_path)
 
-        return gr.Textbox(f"✅ Security file uploaded: {file_path}", visible=True), file_uploads_log + [file_path]
+        return gr.Textbox(f"File uploaded: {file_path}", visible=True), file_uploads_log + [file_path]
 
     def log_user_message(self, text_input, file_uploads_log):
-        """FIXED: Simplified message logging"""
-        enhanced_message = text_input
-        if len(file_uploads_log) > 0:
-            enhanced_message += f"\n\n📁 **Uploaded Files for Analysis:** {', '.join(file_uploads_log)}"
-        
-        return enhanced_message, ""  # Return enhanced message and clear input
+        return (
+            text_input
+            + (
+                f"\nYou have been provided with these files, which might be helpful or not: {file_uploads_log}"
+                if len(file_uploads_log) > 0
+                else ""
+            ),
+            "",
+        )
 
     def launch(self, **kwargs):
         import gradio as gr
 
-        # Security-themed CSS
-        css = """
-        .security-header {
-            background: linear-gradient(90deg, #1e3a8a 0%, #3b82f6 100%);
-            color: white;
-            padding: 1rem;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-            text-align: center;
-        }
-        .security-info {
-            background: #304552;
-            border: 1px solid #0284c7;
-            border-radius: 6px;
-            padding: 0.75rem;
-            margin: 0.5rem 0;
-        }
-        .example-button {
-            margin: 0.2rem;
-            background: #304552 !important;
-            border: 1px solid #0284c7 !important;
-        }
-        """
-
-        with gr.Blocks(fill_height=True, css=css, title="🔒 Python Security Analysis Assistant") as demo:
+        with gr.Blocks(fill_height=True, title="🔒 Security Analysis Agent") as demo:
             stored_messages = gr.State([])
             file_uploads_log = gr.State([])
             
-            # Security-themed header
-            gr.HTML("""
-                <div class="security-header">
-                    <h1>🔒 Python Security Analysis Assistant</h1>
-                    <p>Comprehensive security analysis for Python packages and dependencies</p>
-                </div>
-            """)
+            # Simple header
+            gr.HTML("<h1 style='text-align: center;'>🔒 Python Security Analysis Agent</h1>")
             
-            # Security capabilities info
-            with gr.Row():
-                gr.HTML("""
-                    <div class="security-info">
-                        <h3>🛡️ Security Analysis Capabilities:</h3>
-                        <ul>
-                            <li><strong>Vulnerability Scanning:</strong> CVE detection and CVSS scoring</li>
-                            <li><strong>Package Reputation:</strong> Trust and maintenance analysis</li>
-                            <li><strong>Dependency Analysis:</strong> Supply chain security assessment</li>
-                            <li><strong>Security Reporting:</strong> Executive summaries and remediation plans</li>
-                        </ul>
-                    </div>
-                """)
-            
+            # Main chatbot output
             chatbot = gr.Chatbot(
-                label="🔒 Security Analyst",
+                label="Security Agent",
                 type="messages",
                 avatar_images=(
                     None,
-                    "https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Shield/3D/shield_3d.png",
+                    "https://huggingface.co/datasets/agents-course/course-images/resolve/main/en/communication/Alfred.png",
                 ),
                 resizeable=True,
                 scale=1,
-                height=400,
             )
             
+            # Input row with aligned upload and text input
             with gr.Row():
-                with gr.Column(scale=4):
-                    text_input = gr.Textbox(
-                        lines=1,  # FIXED: Back to single line like HF version
-                        label="🔍 Security Analysis Request",
-                        placeholder="Ask me to analyze package security, check for vulnerabilities, or audit dependencies..."
+                # If an upload folder is provided, enable the upload feature
+                if self.file_upload_folder is not None:
+                    upload_file = gr.File(
+                        label="Upload Security File", 
+                        file_types=[".txt", ".py", ".toml", ".yml", ".yaml", ".json", ".csv"],
+                        scale=1
+                    )
+                    upload_status = gr.Textbox(label="Upload Status", interactive=False, visible=False)
+                    upload_file.change(
+                        self.upload_file,
+                        [upload_file, file_uploads_log],
+                        [upload_status, file_uploads_log],
                     )
                 
-                with gr.Column(scale=1):
-                    # Security file upload
-                    upload_file = gr.File(
-                        label="📁 Upload Security Files",
-                        file_types=[".txt", ".py", ".toml", ".yml", ".yaml", ".json", ".csv"]
-                    )
+                text_input = gr.Textbox(
+                    lines=1, 
+                    label="Security Analysis Request",
+                    placeholder="Ask me to analyze package security, check vulnerabilities, or audit dependencies...",
+                    scale=4
+                )
             
-            upload_status = gr.Textbox(label="📤 Upload Status", interactive=False, visible=False)
-            
-            # Example security tasks
-            with gr.Row():
-                with gr.Column():
-                    gr.HTML("<h4>💡 Example Security Analysis Tasks:</h4>")
-                    example_1 = gr.Button("🔍 Analyze security of requests==2.25.1", elem_classes=["example-button"])
-                    example_2 = gr.Button("🚨 Check for critical vulnerabilities in flask==1.0.0", elem_classes=["example-button"])
-                    example_3 = gr.Button("📊 Security audit: django==2.1.0, numpy==1.19.0", elem_classes=["example-button"])
-                    example_4 = gr.Button("🔗 Full dependency security analysis for fastapi==0.68.0", elem_classes=["example-button"])
-            # <div id="component-15" class="row svelte-1xp0cw7 unequal-height"> </div>
-            # FIXED: Event handlers - simplified like HF version
-            upload_file.change(
-                self.upload_file,
-                [upload_file, file_uploads_log],
-                [upload_status, file_uploads_log],
-            )
-            
-            # FIXED: Direct connection like HF version
+            # Connect input submission
             text_input.submit(
                 self.log_user_message,
                 [text_input, file_uploads_log],
                 [stored_messages, text_input],
             ).then(self.interact_with_agent, [stored_messages, chatbot], [chatbot])
             
-            # Example button handlers
-            def handle_example(example_text):
-                return example_text
-            
-            example_1.click(
-                lambda: "Analyze security of requests==2.25.1",
-                outputs=[text_input]
-            )
-            example_2.click(
-                lambda: "Check for critical vulnerabilities in flask==1.0.0",
-                outputs=[text_input]
-            )
-            example_3.click(
-                lambda: "Security audit: django==2.1.0, numpy==1.19.0",
-                outputs=[text_input]
-            )
-            example_4.click(
-                lambda: "Full dependency security analysis for fastapi==0.68.0",
-                outputs=[text_input]
-            )
+            # Simple footer
+            gr.HTML("<p style='text-align: center; color: #666;'>Security analysis powered by AI agents</p>")
 
         # Set default launch parameters for security context
         launch_kwargs = {
