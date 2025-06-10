@@ -1,3 +1,4 @@
+# src/tools/final_answer.py
 from typing import Any, Optional
 from smolagents.tools import Tool
 
@@ -12,8 +13,7 @@ class FinalAnswerTool(Tool):
     }
     output_type = "any"
 
-    def __init__(self, **kwargs):
-        super().__init__()
+    def __init__(self):
         self.is_initialized = False
 
     def forward(self, answer: Any) -> Any:

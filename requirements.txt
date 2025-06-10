@@ -7,3 +7,7 @@ gradio
 transformers
 torch
 colorama
+markdownify
+smolagents
+duckduckgo_search
+pandas

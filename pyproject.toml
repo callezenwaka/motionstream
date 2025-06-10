@@ -3,7 +3,7 @@ requires = ["setuptools>=45", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "sante"
+name = "motionstream"
 version = "0.1.1"
 description = "Python Package Security Scanner"
 authors = [{name = "Callis Ezenwaka", email = "callisezenwaka@outlook.com"}]
@@ -21,10 +21,12 @@ dependencies = [
     "toml==0.10.2",
     "ollama==0.4.8",
     "smolagents==1.16.1",
+    "duckduckgo-search==8.0.2",
+    "markdownify==1.1.0",
 ]
 
 [project.scripts]
-sante = "cli:main"
+motionstream = "cli:main"
 
 [tool.setuptools]
 packages = ["tools"]
