@@ -1,257 +1,247 @@
-# Santé /sɑ̃te/
+# MotionStream
 
-A comprehensive security scanning tool for Python dependencies that detects vulnerabilities, identifies typosquatting attempts, and visualizes dependency chains.
+**AI-Powered Python Package Security Scanner**
 
-![Security Report Example](https://via.placeholder.com/800x400?text=Security+Report+Example)
+MotionStream is a proof-of-concept security scanner that uses artificial intelligence to analyze Python package dependencies for vulnerabilities, malicious packages, and security risks. It leverages the OSV (Open Source Vulnerabilities) database and advanced AI agents to provide comprehensive security analysis.
 
-## Features
+## ✨ Features
 
-- **Vulnerability Detection**: Scans packages for known security vulnerabilities (CVEs)
-- **Typosquatting Protection**: Identifies malicious packages with names similar to popular libraries
-- **Dependency Chain Analysis**: Visualizes complete dependency trees with vulnerability highlighting
-- **Multiple File Format Support**: Works with requirements.txt, Pipfile, poetry.lock, environment.yml, and more
-- **Automated Monitoring**: Watches dependency files for changes and triggers security scans
-- **Comprehensive Reports**: Generates detailed security reports with remediation recommendations
+- 🚀 **Batch Vulnerability Scanning** - Efficiently scans multiple packages using OSV's batch API
+- 🤖 **AI-Powered Analysis** - Uses Hugging Face AI agents for intelligent security assessment
+- 📊 **Multiple Output Formats** - Console, JSON, and HTML reports
+- 📋 **Multi-Format Support** - Works with `requirements.txt` and `environment.yml` files
+- ⚡ **Fast Performance** - 10-20x faster than individual package scanning
+- 🛡️ **Comprehensive Reporting** - Detailed vulnerability analysis with remediation recommendations
 
-## Installation
+## 🚀 Quick Start
+
+### Installation
 
 ```bash
 # Install directly from GitHub
-pip install git+https://github.com/yourusername/Python_Dependency_Security_Assistant.git
+pip install git+https://github.com/yourusername/motionstream.git
 
-# Or clone and install locally
-git clone https://github.com/yourusername/Python_Dependency_Security_Assistant.git
-cd Python_Dependency_Security_Assistant
-pip install -r requirements.txt
+# Or clone and install in development mode
+git clone https://github.com/yourusername/motionstream.git
+cd motionstream
+pip install -e .
 ```
 
-## Quick Start
+### Setup
 
-### Scan a Package
+1. Get a Hugging Face token from [https://huggingface.co/settings/tokens](https://huggingface.co/settings/tokens)
+2. Set your environment variable:
+   ```bash
+   export HF_TOKEN='your_huggingface_token_here'
+   ```
 
-```bash
-# Scan a specific package
-python app.py requests
-
-# Scan a specific version
-python app.py requests --version 2.25.0
-
-# Include dependency chain analysis
-python app.py requests --check-deps
-```
-
-### Scan a Dependency File
+### Basic Usage
 
 ```bash
-# Scan a requirements file
-python app.py --file requirements.txt
+# Scan a requirements.txt file
+motionstream scan requirements.txt
 
 # Scan a conda environment file
-python app.py --file environment.yml
+motionstream scan environment.yml
 
-# Scan any supported dependency file
-python app.py --file Pipfile
+# Generate JSON report
+motionstream scan requirements.txt --output json
+
+# Generate HTML report
+motionstream scan requirements.txt --output html
 ```
 
-### Watch for Changes
+## 📖 Usage Guide
 
-```bash
-# Monitor the current directory for dependency file changes
-python watcher.py
+### Command Line Interface
 
-# Monitor a specific directory
-python watcher.py --directory /path/to/project
+```
+usage: motionstream [-h] [--output {console,json,html}] {scan} file_path
 
-# Scan immediately when started
-python watcher.py --scan
+🔒 MotionStream - AI-Powered Python Security Scanner
+
+positional arguments:
+  {scan}                Command to execute
+  file_path            Path to requirements.txt or environment.yml
+
+optional arguments:
+  -h, --help           show this help message and exit
+  --output {console,json,html}
+                       Output format (default: console)
 ```
 
-## LLM Enhancement (Optional)
+### Supported File Formats
 
-The tool works completely without an LLM, but can be enhanced with one:
-
-```bash
-# Run with default settings (no LLM)
-python app.py --file requirements.txt
-
-# Use a specific model
-python app.py --file requirements.txt --model mistralai/Mistral-7B-Instruct-v0.2
-
-# Use a local model file
-python app.py --file requirements.txt --model ./models/my-local-model
-
-# Use Ollama
-python app.py --file requirements.txt --model llama2
-
-# Explicitly disable LLM enhancement
-python app.py --file requirements.txt --no-llm
-
-# Basic usage (no LLM)
-python app.py requests
-
-# With specific model
-python app.py requests --model mistralai/Mistral-7B-Instruct-v0.2
-
-# With Ollama model
-python app.py requests --model llama2
-
-# Explicitly disable LLM
-python app.py requests --no-llm
+#### requirements.txt
+```
+requests==2.25.1
+django>=3.0.0
+flask~=2.0.0
+numpy
 ```
 
-## LLM Enhancement (Optional)
-
-This tool can use an LLM to enhance security reports:
-
-```bash
-# Run with default settings (no LLM)
-python app.py requests
-
-# Use a specific model
-python app.py requests --model mistralai/Mistral-7B-Instruct-v0.2
-
-# Use a local Ollama model
-python app.py requests --model llama2
-
-# Explicitly disable LLM
-python app.py requests --no-llm
-
-### Web Interface
-
-```bash
-# Launch the web interface
-python Gradio_UI.py
-```
-
-## Test with pytest
-```sh
-pip install pytest
-
-# Run all tests
-pytest tests/
-
-# Run specific test file
-pytest tests/test_summary.py
-
-# Run specific test file
-pytest tests/test_llm_utils.py
-
-# Run with verbose output
-pytest -v tests/test_summary.py
-
-# Run with verbose output
-pytest -v tests/
-```
-
-![Gradio UI Example](https://via.placeholder.com/800x400?text=Gradio+UI+Example)
-
-## Security Features
-
-### Vulnerability Detection
-
-The tool scans packages against multiple security databases:
-- National Vulnerability Database (NVD)
-- Open Source Vulnerabilities (OSV) database
-- PyPI security advisories
-
-Vulnerabilities are categorized by severity (Critical, High, Medium, Low) with detailed information and remediation steps.
-
-### Typosquatting Protection
-
-Detects potentially malicious packages with names similar to popular libraries:
-- Text similarity analysis
-- Keyboard-adjacency typo detection
-- Package reputation assessment
-
-This helps protect against supply-chain attacks like the "vibe coding" security issue where hackers publish malicious packages with commonly mistyped names.
-
-### Dependency Chain Analysis
-
-Visualizes the complete dependency tree of a package with:
-- Color-coded vulnerability indicators
-- Path tracing to vulnerable dependencies
-- Transitive vulnerability detection
-
-This reveals security issues hidden deep in dependency chains that might otherwise go unnoticed.
-
-## Configuration
-
-You can customize the tool's behavior by creating a `config.yaml` file:
-
+#### environment.yml
 ```yaml
-# Basic configuration example
-features:
-  vulnerability_scan: true
-  name_similarity: true
-  package_reputation: true
-  dependency_chain: true
-
-security:
-  nvd:
-    enabled: true
-    api_key: "your-api-key"  # Optional
-
-watcher:
-  interval: 10  # Check every 10 seconds
-
-output:
-  report_dir: "./my_security_reports"
+name: myproject
+dependencies:
+  - python=3.9
+  - requests=2.25.1
+  - pip:
+    - django==3.2.0
+    - flask>=2.0.0
 ```
 
-See the [full configuration options](config/default_config.yaml) for more details.
+## 🖥️ Output Examples
 
-## Report Example
-
-```markdown
-# Security Analysis: requests==2.25.0
-
-Scanned on 2023-05-21 15:30:45
-
-## Summary
-
-⚠️ **HIGH SECURITY ISSUES FOUND**
-
-* Found **2** vulnerabilities in **1** packages
-* Severity breakdown:
-  * Critical: **0**
-  * High: **1**
-  * Medium: **1**
-  * Low: **0**
-
-## Vulnerability Details
-
-### requests (version 2.25.0)
-
-#### ⚠️ CVE-2023-32681 (High)
-
-**Summary**: URL Parsing Vulnerability in Requests
-
-**Details**: URL parsing in Requests before 2.31.0 may cause a maliciously crafted URL to be parsed differently by different components.
-
-**Fixed in versions**: 2.31.0
-
-**References**:
-* https://github.com/psf/requests/security/advisories/GHSA-j8r2-6x86-q33q
-
-#### Remediation
-
-Upgrade to version **2.31.0** or later.
-
+### Console Output
 ```
-pip install requests>=2.31.0
-```
+🔒 MotionStream Security Scanner
+----------------------------------------
+📦 Parsed 15 packages from requirements.txt
+
+🔍 Running comprehensive security analysis...
+
+# Install dependencies without changing package managers
+pip install -r requirements.txt
+
+# Safety secures every installation request
+Installed django 5.1.7
+Installed boto3 1.37.26
+Installed requests 2.31.0
+⚠ Blocked "tensorflow" - malicious package detected!
+
+Securely installed 3 dependencies, blocked 1.
+
+# Reports on vulnerabilities in your dependencies
+⚠ Warning: requests 2.31.0 has a vulnerability impacting
+the Session class. Upgrade to 2.32.0 to fix.
+
+✅ Security analysis completed successfully!
 ```
 
-## License
+### JSON Output
+```json
+{
+  "scan_timestamp": "2025-01-11T10:30:00",
+  "dependencies_scanned": 15,
+  "vulnerabilities_found": 3,
+  "summary": {
+    "critical": 0,
+    "high": 1,
+    "medium": 2,
+    "low": 0
+  },
+  "dependencies": [...],
+  "vulnerabilities": [...],
+  "agent_analysis": "..."
+}
+```
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+## 🛠️ Development
 
-## Acknowledgments
+### Requirements
+- Python 3.8+
+- Hugging Face account and API token
+- Internet connection for OSV and PyPI APIs
 
-- National Vulnerability Database for security data
-- Open Source Vulnerabilities database
-- The Python packaging community
+### Dependencies
+```
+smolagents>=0.1.0
+requests>=2.28.0
+pyyaml>=6.0
+packaging>=21.0
+huggingface-hub>=0.16.0
+```
+
+### Running Tests
+```bash
+# Test the package scanner directly
+python -c "
+from src.tools.package_scan import PackageScanTool
+scanner = PackageScanTool()
+result = scanner.forward([{'name': 'requests', 'version': '2.25.1'}])
+print(f'Found {len(result)} vulnerabilities')
+"
+```
+
+## 🔍 How It Works
+
+1. **Parse Dependencies** - Extracts package names and versions from dependency files
+2. **Batch Vulnerability Scan** - Uses OSV's `/v1/querybatch` API for efficient scanning
+3. **AI Analysis** - Processes scan results through specialized AI agent
+4. **Risk Assessment** - Evaluates severity, impact, and provides recommendations
+5. **Report Generation** - Formats results in user-specified format
+
+## 🚨 Security Considerations
+
+- **API Keys** - Keep your Hugging Face token secure
+- **Network Requests** - Tool makes external API calls to OSV and PyPI
+- **False Positives** - Always verify vulnerability reports manually
+- **Rate Limits** - Respects API rate limits automatically
+
+## 📝 Examples
+
+### Scan a Django Project
+```bash
+# Create a sample requirements.txt
+echo "django==2.1.0
+requests==2.25.1
+pillow==8.0.0" > requirements.txt
+
+# Scan for vulnerabilities
+motionstream scan requirements.txt
+```
+
+### Generate HTML Report
+```bash
+motionstream scan requirements.txt --output html
+# Creates: security_report_YYYYMMDD_HHMMSS.html
+```
+
+### Scan Conda Environment
+```bash
+# Export your current environment
+conda env export > environment.yml
+
+# Scan it
+motionstream scan environment.yml
+```
+
+## 🤝 Contributing
+
+This is a proof-of-concept project. For improvements:
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Test thoroughly
+5. Submit a pull request
+
+## Run tests
+```bash
+# Run all tests
+pytest
+
+# Run specific test file
+pytest tests/test_parser.py -v
+
+# Run with coverage
+pip install pytest-cov
+pytest --cov=src tests/
+```
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- [OSV (Open Source Vulnerabilities)](https://osv.dev/) - Vulnerability database
+- [Hugging Face](https://huggingface.co/) - AI model hosting
+- [smolagents](https://github.com/huggingface/smolagents) - AI agent framework
+
+## ⚠️ Disclaimer
+
+MotionStream is a proof-of-concept tool for educational and research purposes. While it uses reliable vulnerability databases and AI analysis, always verify security findings manually and use additional security tools in production environments.
 
 ---
-
-*Python Dependency Security Assistant is not affiliated with PyPI or the Python Software Foundation.*

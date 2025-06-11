@@ -1,3 +1,4 @@
+# src/utils/scanner.py
 from packaging import version
 from typing import List
 

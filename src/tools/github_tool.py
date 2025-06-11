@@ -1,4 +1,4 @@
-# src/tools/github_details.py
+# src/tools/github_tool.py
 
 import requests
 import re
@@ -6,7 +6,7 @@ from typing import Any, Dict
 from smolagents.tools import Tool
 
 class GithubTool(Tool):
-    name = "github_details"
+    name = "github_tool"
     description = "Fetches basic detailed information about a GitHub repository from its main API endpoint."
     inputs = {
         'github_url': {
@@ -30,7 +30,7 @@ class GithubTool(Tool):
         Returns:
             A dictionary containing core GitHub repository details.
         """
-        print(f"Agent executing get_github_details tool for: {github_url}")
+        print(f"Agent executing github_tool tool for: {github_url}")
         
         # Extract owner/repo directly from the URL
         owner_repo = None

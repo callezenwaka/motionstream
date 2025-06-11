@@ -1,11 +1,11 @@
-# src/tools/get_pypi_details.py
+# src/tools/pypi_tool.py
 
 import requests
 from typing import Any, Dict
 from smolagents.tools import Tool 
 
 class PypiTool(Tool):
-    name = "pypi_details"
+    name = "pypi_tool"
     description = "Fetches detailed general information about a Python package from PyPI."
     inputs = {
         'package_name': {
@@ -29,7 +29,7 @@ class PypiTool(Tool):
         Returns:
             A dictionary containing PyPI details.
         """
-        print(f"Agent executing get_pypi_details tool for: {package_name}")
+        print(f"Agent executing pypi_tool tool for: {package_name}")
         
         try:
             response = requests.get(

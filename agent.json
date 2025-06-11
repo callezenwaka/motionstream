@@ -1,10 +1,9 @@
+
 {
     "tools": [
-        "vulnerability_scan",
-        "package_reputation",
-        "dependency_analysis",
-        "security_summary",
-        "duckduckgo_search",
+        "package_scan",
+        "github_tool",
+        "pypi_tool",
         "final_answer"
     ],
     "model": {
@@ -14,7 +13,7 @@
             "temperature": 0.2,
             "last_input_token_count": null,
             "last_output_token_count": null,
-            "model_id": "Qwen/Qwen2.5-Coder-32B-Instruct",
+            "model_id": "ZySec-AI/SecurityLLM",
             "custom_role_conversions": null
         }
     },
