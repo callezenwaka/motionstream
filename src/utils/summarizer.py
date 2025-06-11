@@ -1,11 +1,11 @@
-# src/utils/summary.py
+# src/utils/summarizer.py
 
 import json
 from typing import Dict, List, Any
 from datetime import datetime
 from pathlib import Path
 
-class Summary:
+class Summarizer:
     """Format security scan results for different output types."""
     
     def __init__(self, output_format: str = 'console'):

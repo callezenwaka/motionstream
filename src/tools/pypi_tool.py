@@ -9,11 +9,11 @@ class PypiTool(Tool):
     description = "Fetches detailed general information about a Python package from PyPI."
     inputs = {
         'package_name': {
-            'type': 'str',
+            'type': 'string',
             'description': 'The name of the Python package to fetch details for (e.g., "requests").'
         }
     }
-    output_type = "dict" # A dictionary containing PyPI details
+    output_type = "object" # A dictionary containing PyPI details
 
     def __init__(self, **kwargs):
         super().__init__()

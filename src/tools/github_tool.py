@@ -10,11 +10,11 @@ class GithubTool(Tool):
     description = "Fetches basic detailed information about a GitHub repository from its main API endpoint."
     inputs = {
         'github_url': {
-            'type': 'str',
+            'type': 'string',
             'description': 'The URL of the GitHub repository (e.g., "https://github.com/owner/repo").'
         }
     }
-    output_type = "dict" # A dictionary containing core GitHub repository details
+    output_type = "object" # A dictionary containing core GitHub repository details
 
     def __init__(self, **kwargs):
         super().__init__()

@@ -9,11 +9,11 @@
     "model": {
         "class": "InferenceClientModel",
         "data": {
-            "max_tokens": 3072,
+            "max_tokens": 1024,
             "temperature": 0.2,
             "last_input_token_count": null,
             "last_output_token_count": null,
-            "model_id": "ZySec-AI/SecurityLLM",
+            "model_id": "Qwen/Qwen2.5-Coder-32B-Instruct",
             "custom_role_conversions": null
         }
     },

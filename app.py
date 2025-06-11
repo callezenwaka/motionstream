@@ -9,8 +9,8 @@ from smolagents import CodeAgent, InferenceClientModel
 
 # imports utils
 from src.utils.parser import parse_dependency_file
-from src.utils.summarizer import Summary
 from src.utils.spinner import run_with_spinner
+from src.utils.summarizer import Summarizer
 
 from src.tools.final_answer import FinalAnswerTool
 from src.tools.package_scan import PackageScanTool
@@ -71,7 +71,7 @@ def create_security_agent():
     
     # Extract model configuration
     model_config = config.get("model", {}).get("data", {})
-    model_id = model_config.get("model_id", 'ZySec-AI/SecurityLLM')
+    model_id = model_config.get("model_id", 'Qwen/Qwen2.5-Coder-32B-Instruct') # Qwen/Qwen2.5-Coder-32B-Instruct ZySec-AI/SecurityLLM
 
     model = InferenceClientModel(
         max_tokens=model_config.get("max_tokens", 3072),
@@ -178,7 +178,7 @@ def scan_command(file_path: str, output_format: str = 'console'):
         # Step 4: Display results
         print()
         if result:
-            formatter = Summary(output_format=output_format)
+            formatter = Summarizer(output_format=output_format)
             formatter.display_results(result, dependencies)
         else:
             print("❌ No analysis results were returned by the security agent")
