@@ -37,22 +37,41 @@ class Spinner:
         if self.thread:
             self.thread.join()
         
-        # Clear the spinner line by overwriting it with spaces
-        sys.stdout.write('\r' + ' ' * (len(self.message) + 10) + '\r')
+        # Clear the spinner line completely with more spaces
+        sys.stdout.write('\r' + ' ' * 80 + '\r')
         sys.stdout.flush()
         
         if success_message:
-            print(f"✓ {success_message}")
+            print(f"✓ {success_message}")  # Removed the \r here
+            print()  # Add clean separation
 
 def run_with_spinner(func, spinner_message, success_message=None):
     """Run a function with a spinner display."""
     spinner = Spinner(spinner_message)
     
     try:
+        # Start spinner to show progress
         spinner.start()
+        
+        # Let spinner run for a moment to show activity
+        time.sleep(0.5)
+        
+        # STOP spinner before running function to prevent output collision
+        spinner.stop()
+        
+        # Brief pause to ensure spinner stops completely
+        time.sleep(0.1)
+        
+        # Now run the function - agent will have clean terminal
         result = func()
-        spinner.stop(success_message)
+        
+        # Show success message after completion
+        if success_message:
+            print(f"✓ {success_message}")
+            print()
+        
         return result
+        
     except Exception as e:
         spinner.stop()
         print(f"✗ Error: {e}")
