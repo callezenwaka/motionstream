@@ -72,7 +72,6 @@ def create_security_agent(model_id=None):
     # Extract model configuration
     model_config = config.get("model", {}).get("data", {})
     if model_id is None:
-        # ZySec-AI/SecurityLLM
         model_id = model_config.get("model_id", 'Qwen/Qwen2.5-Coder-32B-Instruct')
 
     model = InferenceClientModel(
@@ -98,7 +97,7 @@ def create_security_agent(model_id=None):
     agent = CodeAgent(**agent_params)
     return agent
 
-def scan_command(file_path: str, output_format: str = 'console'):
+def scan_command(file_path: str, output_format: str = 'console', model_id: str = None):
     """Scan command with spinner integration and error handling."""
     
     try:
@@ -134,7 +133,7 @@ def scan_command(file_path: str, output_format: str = 'console'):
         
         # Step 2: Create security agent with spinner
         def setup_agent():
-            return create_security_agent()
+            return create_security_agent(model_id)
         
         agent = run_with_spinner(
             setup_agent,
