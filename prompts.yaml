@@ -173,5 +173,32 @@
     {{final_answer}}
     
 'final_answer':
-  'pre_messages': 'Thinking about the final answer...'
-  'post_messages': 'Final answer formulated.'
+  'pre_messages': |
+    When you have completed your analysis, you MUST use the final_answer tool with this EXACT structure:
+    
+    final_answer({
+      "vulnerable_packages": {
+        "package_name": [
+          {
+            "vulnerability_id": "CVE-xxxx or GHSA-xxxx",
+            "severity": "Critical|High|Medium|Low",
+            "source": "OSV|GitHub|NVD",
+            "modified_date": "ISO date string"
+          }
+        ]
+      },
+      "upgrade_recommendations": {
+        "package_name": "Specific upgrade instruction"
+      },
+      "overall_risk_assessment": "Overall security summary and recommendations"
+    })
+    
+    IMPORTANT RULES:
+    - If NO vulnerabilities found: use empty dict {"vulnerable_packages": {}}
+    - Always include all three keys: vulnerable_packages, upgrade_recommendations, overall_risk_assessment
+    - Use exact severity values: Critical, High, Medium, or Low
+    - Be specific in upgrade recommendations
+  
+  'post_messages': |
+    Remember: Your final answer MUST use the final_answer tool with the exact dictionary structure shown above.
+    This ensures consistent parsing and proper display of security results.

@@ -185,27 +185,31 @@ class Summarizer:
             f.write(html_report)
         
         print(f"HTML report saved to: {report_file}")
-    
+
     def _extract_vulnerabilities_from_agent_result(self, agent_result: Any) -> List[Dict[str, Any]]:
         """
         Extract vulnerability information from agent result.
-        This needs to be adapted based on your actual agent output structure.
         """
         vulnerabilities = []
         
-        # This is a placeholder - you'll need to adapt this based on how your agent
-        # structures its final answer
-        if hasattr(agent_result, 'vulnerabilities'):
-            vulnerabilities = agent_result.vulnerabilities
-        elif isinstance(agent_result, dict) and 'vulnerabilities' in agent_result:
-            vulnerabilities = agent_result['vulnerabilities']
-        elif isinstance(agent_result, str):
-            # Try to parse vulnerabilities from text output
-            # This is a simple fallback - you might want more sophisticated parsing
-            vulnerabilities = self._parse_vulnerabilities_from_text(agent_result)
+        if isinstance(agent_result, dict) and 'vulnerable_packages' in agent_result:
+            vulnerable_packages = agent_result['vulnerable_packages']
+            
+            for package_name, package_vulns in vulnerable_packages.items():
+                if isinstance(package_vulns, list):
+                    for vuln in package_vulns:
+                        vulnerabilities.append({
+                            'package': package_name,
+                            'severity': vuln.get('severity', 'UNKNOWN').upper(),
+                            'id': vuln.get('vulnerability_id', 'N/A'),
+                            'summary': f'Security vulnerability in {package_name}',
+                            'fixed_version': 'latest',
+                            'component': 'package',
+                            'version': 'current'
+                        })
         
         return vulnerabilities
-    
+
     def _parse_vulnerabilities_from_text(self, text: str) -> List[Dict[str, Any]]:
         """Parse vulnerability information from text output."""
         # This is a simple parser - you can make it more sophisticated
