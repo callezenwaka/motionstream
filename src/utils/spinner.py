@@ -37,14 +37,13 @@ class Spinner:
         if self.thread:
             self.thread.join()
         
-        # Clear the spinner line by overwriting it with spaces
-        # sys.stdout.write('\r' + ' ' * (len(self.message) + 10) + '\r')
         # Clear the spinner line completely with more spaces
         sys.stdout.write('\r' + ' ' * 80 + '\r')
         sys.stdout.flush()
         
         if success_message:
-            print(f"✓ {success_message}")
+            print(f"✓ {success_message}")  # Removed the \r here
+            print()  # Add clean separation
 
 def run_with_spinner(func, spinner_message, success_message=None):
     """Run a function with a spinner display."""
@@ -77,6 +76,7 @@ def run_with_spinner(func, spinner_message, success_message=None):
             print()
         
         return result
+        
     except Exception as e:
         spinner.stop()
         print(f"✗ Error: {e}")

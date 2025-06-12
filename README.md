@@ -31,9 +31,9 @@ pip install -e .
 
 1. Get a Hugging Face token from [https://huggingface.co/settings/tokens](https://huggingface.co/settings/tokens)
 2. Set your environment variable:
-   ```bash
-   export HF_TOKEN='your_huggingface_token_here'
-   ```
+```bash
+export HF_TOKEN='your_huggingface_token_here'
+```
 
 ### Basic Usage
 
@@ -49,6 +49,13 @@ motionstream scan requirements.txt --output json
 
 # Generate HTML report
 motionstream scan requirements.txt --output html
+
+# Or with custom model
+motionstream scan requirements.txt
+motionstream scan environment.yml --output json
+motionstream scan requirements.txt --output html
+motionstream scan requirements.txt --model "model-id"
+motionstream scan requirements.txt --model "model-id" --output json
 ```
 
 ## 📖 Usage Guide
@@ -73,7 +80,7 @@ optional arguments:
 ### Supported File Formats
 
 #### requirements.txt
-```
+```txt
 requests==2.25.1
 django>=3.0.0
 flask~=2.0.0
@@ -181,17 +188,6 @@ print(f'Found {len(result)} vulnerabilities')
 
 ## 📝 Examples
 
-### Scan a Django Project
-```bash
-# Create a sample requirements.txt
-echo "django==2.1.0
-requests==2.25.1
-pillow==8.0.0" > requirements.txt
-
-# Scan for vulnerabilities
-motionstream scan requirements.txt
-```
-
 ### Generate HTML Report
 ```bash
 motionstream scan requirements.txt --output html
@@ -207,17 +203,8 @@ conda env export > environment.yml
 motionstream scan environment.yml
 ```
 
-## 🤝 Contributing
-
-This is a proof-of-concept project. For improvements:
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
-
 ## Run tests
+
 ```bash
 # Run all tests
 pytest
@@ -229,6 +216,16 @@ pytest tests/test_parser.py -v
 pip install pytest-cov
 pytest --cov=src tests/
 ```
+
+## 🤝 Contributing
+
+This is a proof-of-concept project. For improvements:
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Test thoroughly
+5. Submit a pull request
 
 ## 📄 License
 

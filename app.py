@@ -62,7 +62,7 @@ def initialize_tools():
     tools.append(FinalAnswerTool())
     return tools
 
-def create_security_agent():
+def create_security_agent(model_id=None):
     """Create and configure the security analysis agent."""
     
     config = load_config()
@@ -71,7 +71,9 @@ def create_security_agent():
     
     # Extract model configuration
     model_config = config.get("model", {}).get("data", {})
-    model_id = model_config.get("model_id", 'Qwen/Qwen2.5-Coder-32B-Instruct') # Qwen/Qwen2.5-Coder-32B-Instruct ZySec-AI/SecurityLLM
+    if model_id is None:
+        # ZySec-AI/SecurityLLM
+        model_id = model_config.get("model_id", 'Qwen/Qwen2.5-Coder-32B-Instruct')
 
     model = InferenceClientModel(
         max_tokens=model_config.get("max_tokens", 3072),
@@ -206,6 +208,12 @@ def main():
             motionstream scan requirements.txt
             motionstream scan environment.yml --output json
             motionstream scan requirements.txt --output html
+            Or for custom model
+            motionstream scan requirements.txt
+            motionstream scan environment.yml --output json
+            motionstream scan requirements.txt --output html
+            motionstream scan requirements.txt --model "model-id"
+            motionstream scan requirements.txt --model "model-id" --output json
         """,
         formatter_class=argparse.RawDescriptionHelpFormatter
     )
