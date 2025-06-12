@@ -41,20 +41,34 @@ class PypiTool(Tool):
             
             # Extract only basic info (no dependency-related fields)
             info = data.get("info", {})
-            
+
             return {
-                "name": info.get("name"),
-                "version": info.get("version"),
-                "summary": info.get("summary"),
-                "author": info.get("author"),
-                "author_email": info.get("author_email"),
-                "license": info.get("license"),
-                "home_page": info.get("home_page"),
-                "project_urls": info.get("project_urls"),
-                "requires_python": info.get("requires_python"),
-                "classifiers": info.get("classifiers"),
+                "name": info.get("name", ""),
+                "version": info.get("version", ""),
+                "summary": info.get("summary", ""),
+                "author": info.get("author", ""),
+                "author_email": info.get("author_email", ""),
+                "license": info.get("license", ""),
+                "home_page": info.get("home_page", ""),
+                "project_urls": info.get("project_urls", {}),
+                "requires_python": info.get("requires_python", ""),
+                "classifiers": info.get("classifiers", []),
                 "package_url": f"https://pypi.org/project/{package_name}/"
             }
+            
+            # return {
+            #     "name": info.get("name"),
+            #     "version": info.get("version"),
+            #     "summary": info.get("summary"),
+            #     "author": info.get("author"),
+            #     "author_email": info.get("author_email"),
+            #     "license": info.get("license"),
+            #     "home_page": info.get("home_page"),
+            #     "project_urls": info.get("project_urls"),
+            #     "requires_python": info.get("requires_python"),
+            #     "classifiers": info.get("classifiers"),
+            #     "package_url": f"https://pypi.org/project/{package_name}/"
+            # }
         except requests.exceptions.RequestException as e:
             print(f"Error fetching PyPI info for {package_name}: {e}")
             return {
