@@ -1,4 +1,4 @@
-# app.py - Corrected version
+# app.py
 import os
 import json
 import sys
@@ -12,7 +12,7 @@ from src.utils.parser import parse_dependency_file
 from src.utils.spinner import run_with_spinner
 from src.utils.summarizer import Summarizer
 
-from src.tools.final_answer import FinalAnswerTool
+# from src.tools.final_answer import FinalAnswerTool
 from src.tools.package_scan import PackageScanTool
 from src.tools.pypi_tool import PypiTool
 from src.tools.github_tool import GithubTool
@@ -59,7 +59,7 @@ def initialize_tools():
     tools.append(PackageScanTool())
     tools.append(GithubTool())
     tools.append(PypiTool())
-    tools.append(FinalAnswerTool())
+    # tools.append(FinalAnswerTool())
     return tools
 
 def create_security_agent():
@@ -147,13 +147,13 @@ def scan_command(file_path: str, output_format: str = 'console'):
         # Step 3: Run comprehensive security analysis with spinner
         def run_security_analysis():
             task = f"""
-            Perform a comprehensive security vulnerability scan of these {len(dependencies)} Python packages:
+            Perform a security vulnerability scan of these {len(dependencies)} Python packages:
 
             {chr(10).join([f"- {pkg['name']}" + (f" version {pkg['version']}" if pkg.get('version') else " (latest)") for pkg in dependencies])}
 
             Instructions:
-            1. Use the package_scan tool to scan ALL packages in batch for maximum efficiency
-            2. Focus on Critical and High severity vulnerabilities 
+            1. Use the package_scan tool to scan the specified packages for vulnerabilities
+            2. Focus on Critical and High severity vulnerabilities
             3. Identify any potentially malicious packages
             4. Provide specific remediation recommendations
             5. Give an overall security assessment
@@ -202,10 +202,10 @@ def main():
     parser = argparse.ArgumentParser(
         description="🔒 MotionStream - AI-Powered Python Security Scanner",
         epilog="""
-Examples:
-  motionstream scan requirements.txt
-  motionstream scan environment.yml --output json
-  motionstream scan requirements.txt --output html
+            Examples:
+            motionstream scan requirements.txt
+            motionstream scan environment.yml --output json
+            motionstream scan requirements.txt --output html
         """,
         formatter_class=argparse.RawDescriptionHelpFormatter
     )

@@ -1,4 +1,4 @@
-# src/utils/spinner.py - Your exact spinner implementation
+# src/utils/spinner.py
 import threading
 import time
 import sys
@@ -19,6 +19,7 @@ class Spinner:
             for symbol in self.spinner_symbols:
                 if not self.running:
                     break
+                # Removed '\n' from here and added padding to clear the line
                 sys.stdout.write(f'\r{symbol} {self.message}...')
                 sys.stdout.flush()
                 time.sleep(self.delay)
@@ -36,7 +37,7 @@ class Spinner:
         if self.thread:
             self.thread.join()
         
-        # Clear the spinner line
+        # Clear the spinner line by overwriting it with spaces
         sys.stdout.write('\r' + ' ' * (len(self.message) + 10) + '\r')
         sys.stdout.flush()
         

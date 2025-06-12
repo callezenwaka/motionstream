@@ -37,7 +37,6 @@ dev = [
     "colorama==0.4.6",
     "packaging==25.0",
     "pyyaml==6.0.2",
-    "networkx==3.4.2",
     "matplotlib==3.10.3",
     "gradio==5.31.0",
     "transformers==4.52.3",
@@ -45,7 +44,6 @@ dev = [
     "toml==0.10.2",
     "ollama==0.4.8",
     "smolagents==1.16.1",
-    "duckduckgo-search==8.0.2",
     "markdownify==1.1.0",
 ]
 

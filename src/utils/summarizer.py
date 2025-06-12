@@ -1,5 +1,5 @@
 # src/utils/summarizer.py
-
+import re
 import json
 from typing import Dict, List, Any
 from datetime import datetime
@@ -21,6 +21,7 @@ class Summarizer:
             'WARNING': '\033[93m',     # Yellow
             'SUCCESS': '\033[92m',     # Green
             'INFO': '\033[96m',        # Cyan
+            'ORANGE': '\033[38;5;208m',   # Orange
         }
     
     def display_results(self, agent_result: Any, dependencies: List[Dict[str, Any]]):
@@ -33,52 +34,83 @@ class Summarizer:
             self._display_html(agent_result, dependencies)
     
     def _display_console(self, agent_result: Any, dependencies: List[Dict[str, Any]]):
-        """Display results in console format matching the screenshot."""
-        print(f"\n{self.colors['INFO']}# Install dependencies without changing package managers{self.colors['RESET']}")
-        print(f"pip install -r requirements.txt")
+        """Display results in security scanner console format."""
+        
+        print(f"\n🔒 {self.colors['INFO']}MotionStream Security Report{self.colors['RESET']}")
         print()
         
-        print(f"{self.colors['INFO']}# Safety secures every installation request{self.colors['RESET']}")
-        
-        # Parse agent results to extract vulnerability info
-        # This would need to be adapted based on your actual agent output structure
+        # Parse vulnerabilities from agent result
         vulnerabilities = self._extract_vulnerabilities_from_agent_result(agent_result)
         
-        # Display installed packages
-        installed_count = 0
-        blocked_count = 0
+        # Create vulnerability lookup
+        vuln_lookup = {v['package']: v for v in vulnerabilities}
         
+        print(f"📦 Scanned {len(dependencies)} packages:")
+        
+        # Display each package with status
         for dep in dependencies:
-            if dep.get('name'):
-                # Simulate installation status based on vulnerabilities
-                is_vulnerable = any(v.get('package') == dep['name'] for v in vulnerabilities)
+            if not dep.get('name'):
+                continue
                 
-                if is_vulnerable:
-                    # Find the vulnerability for this package
-                    vuln = next((v for v in vulnerabilities if v.get('package') == dep['name']), {})
-                    if vuln.get('severity') == 'CRITICAL' or vuln.get('malicious'):
-                        print(f"{self.colors['WARNING']}⚠ Blocked \"{dep['name']}\" - malicious package detected!{self.colors['RESET']}")
-                        blocked_count += 1
-                    else:
-                        print(f"Installed {dep['name']} {dep.get('version', 'latest')}")
-                        installed_count += 1
+            package_name = dep['name']
+            version = dep.get('version', 'latest')
+            
+            if package_name in vuln_lookup:
+                vuln = vuln_lookup[package_name]
+                severity = vuln.get('severity', 'UNKNOWN')
+                if severity == 'CRITICAL':
+                    print(f"   ❌ {package_name} {self.colors['ORANGE']}{version}{self.colors['RESET']} - {self.colors['CRITICAL']}CRITICAL{self.colors['RESET']} vulnerabilities found")
+                elif severity == 'HIGH':
+                    print(f"   ❌ {package_name} {self.colors['ORANGE']}{version}{self.colors['RESET']} - {self.colors['HIGH']}HIGH{self.colors['RESET']} vulnerabilities found")
                 else:
-                    print(f"Installed {dep['name']} {dep.get('version', 'latest')}")
-                    installed_count += 1
+                    print(f"   ❌ {package_name} {self.colors['ORANGE']}{version}{self.colors['RESET']} - vulnerabilities found")
+            else:
+                print(f"   ✓ {package_name} {self.colors['ORANGE']}{version}{self.colors['RESET']}")
         
         print()
-        print(f"Securely installed {self.colors['SUCCESS']}{installed_count}{self.colors['RESET']} dependencies, blocked {self.colors['WARNING']}{blocked_count}{self.colors['RESET']}.")
-        print()
         
-        # Display vulnerability warnings
-        print(f"{self.colors['INFO']}# Reports on vulnerabilities in your dependencies{self.colors['RESET']}")
-        
-        for vuln in vulnerabilities:
-            if vuln.get('severity') in ['HIGH', 'CRITICAL']:
-                severity_color = self.colors.get(vuln['severity'], self.colors['RESET'])
-                print(f"{self.colors['WARNING']}⚠ Warning: {vuln.get('package')} {vuln.get('version', 'unknown')} has a vulnerability impacting")
-                print(f"the {vuln.get('component', 'unknown component')}. Upgrade to {vuln.get('fixed_version', '>=newer version')} to fix.{self.colors['RESET']}")
+        # Display detailed security issues
+        if vulnerabilities:
+            print(f"🔍 {self.colors['INFO']}Security Issues Found:{self.colors['RESET']}")
+            print()
+            
+            for vuln in vulnerabilities:
+                severity = vuln.get('severity', 'UNKNOWN')
+                package = vuln.get('package', 'unknown')
+                version = vuln.get('version', 'latest')
+                component = vuln.get('component', 'package')
+                fixed_version = vuln.get('fixed_version', 'latest')
+                
+                severity_color = self.colors.get(severity, self.colors['RESET'])
+                
+                if severity == 'CRITICAL':
+                    print(f"⚠ {severity_color}{severity}{self.colors['RESET']}: {package} {self.colors['ORANGE']}{version}{self.colors['RESET']} has remote code execution vulnerability")
+                    print(f"  Impact: {component} compromise")
+                elif severity == 'HIGH':
+                    print(f"⚠ {severity_color}{severity}{self.colors['RESET']}: {package} {self.colors['ORANGE']}{version}{self.colors['RESET']} has file access vulnerabilities")
+                    print(f"  Impact: {component}")
+                else:
+                    print(f"⚠ {severity_color}{severity}{self.colors['RESET']}: {package} {self.colors['ORANGE']}{version}{self.colors['RESET']} has security issues")
+                    print(f"  Impact: {component}")
+                
+                print(f"  Fix: {self.colors['SUCCESS']}pip install {package}>={fixed_version}{self.colors['RESET']}")
                 print()
+        
+        # Summary statistics
+        critical_count = len([v for v in vulnerabilities if v.get('severity') == 'CRITICAL'])
+        high_count = len([v for v in vulnerabilities if v.get('severity') == 'HIGH'])
+        total_vulns = len(vulnerabilities)
+        
+        print(f"📊 Summary: {total_vulns} vulnerabilities found", end="")
+        if critical_count > 0 or high_count > 0:
+            print(f" ({critical_count} Critical, {high_count} High)")
+        else:
+            print()
+            
+        if total_vulns > 0:
+            print(f"🎯 Recommendation: {self.colors['WARNING']}Update vulnerable packages immediately{self.colors['RESET']}")
+        else:
+            print(f"🎯 Status: {self.colors['SUCCESS']}All packages are secure{self.colors['RESET']}")
     
     def _display_json(self, agent_result: Any, dependencies: List[Dict[str, Any]]):
         """Display results in JSON format."""

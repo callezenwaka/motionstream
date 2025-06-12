@@ -1,13 +1,3 @@
-requests
-pyyaml
-networkx
-matplotlib
-packaging
-gradio
-transformers
-torch
-colorama
-markdownify
-smolagents
-duckduckgo_search
-pandas
+requests==2.32.4
+pandas==
+browser-use==0.1.44
