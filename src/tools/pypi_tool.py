@@ -41,7 +41,7 @@ class PypiTool(Tool):
             
             # Extract only basic info (no dependency-related fields)
             info = data.get("info", {})
-            
+
             return {
                 "name": info.get("name", ""),
                 "version": info.get("version", ""),
@@ -55,6 +55,7 @@ class PypiTool(Tool):
                 "classifiers": info.get("classifiers", []),
                 "package_url": f"https://pypi.org/project/{package_name}/"
             }
+            
         except requests.exceptions.RequestException as e:
             print(f"Error fetching PyPI info for {package_name}: {e}")
             return {

@@ -50,6 +50,11 @@ def run_with_spinner(func, spinner_message, success_message=None):
     spinner = Spinner(spinner_message)
     
     try:
+        # spinner.start()
+        # result = func()
+        # spinner.stop(success_message)
+        # return result
+
         # Start spinner to show progress
         spinner.start()
         

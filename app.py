@@ -12,7 +12,7 @@ from src.utils.parser import parse_dependency_file
 from src.utils.spinner import run_with_spinner
 from src.utils.summarizer import Summarizer
 
-# from src.tools.final_answer import FinalAnswerTool
+from src.tools.final_answer import FinalAnswerTool
 from src.tools.package_scan import PackageScanTool
 from src.tools.pypi_tool import PypiTool
 from src.tools.github_tool import GithubTool
@@ -59,7 +59,7 @@ def initialize_tools():
     tools.append(PackageScanTool())
     tools.append(GithubTool())
     tools.append(PypiTool())
-    # tools.append(FinalAnswerTool())
+    tools.append(FinalAnswerTool())
     return tools
 
 def create_security_agent(model_id=None):
