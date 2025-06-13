@@ -19,10 +19,10 @@ MotionStream is a proof-of-concept security scanner that uses artificial intelli
 
 ```bash
 # Install directly from GitHub
-pip install git+https://github.com/yourusername/motionstream.git
+pip install git+https://github.com/callezenwaka/motionstream.git
 
 # Or clone and install in development mode
-git clone https://github.com/yourusername/motionstream.git
+git clone https://github.com/callezenwaka/motionstream.git
 cd motionstream
 pip install -e .
 ```
@@ -32,7 +32,7 @@ pip install -e .
 1. Get a Hugging Face token from [https://huggingface.co/settings/tokens](https://huggingface.co/settings/tokens)
 2. Set your environment variable:
 ```bash
-export HF_TOKEN='your_huggingface_token_here'
+export HF_TOKEN='huggingface_token'
 ```
 
 ### Basic Usage

@@ -48,7 +48,7 @@ class PypiTool(Tool):
                 "summary": info.get("summary", ""),
                 "author": info.get("author", ""),
                 "author_email": info.get("author_email", ""),
-                "license": info.get("license", ""),
+                # "license": info.get("license", ""),
                 "home_page": info.get("home_page", ""),
                 "project_urls": info.get("project_urls", {}),
                 "requires_python": info.get("requires_python", ""),
