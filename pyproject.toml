@@ -51,10 +51,10 @@ dev = [
 motionstream = "app:main"
 
 [project.urls]
-Homepage = "https://github.com/callezenwaka/motionstream"
-Documentation = "https://github.com/callezenwaka/motionstream#readme"
-Repository = "https://github.com/callezenwaka/motionstream"
-"Bug Tracker" = "https://github.com/callezenwaka/motionstream/issues"
+Homepage = "https://github.com/yourusername/motionstream"
+Documentation = "https://github.com/yourusername/motionstream#readme"
+Repository = "https://github.com/yourusername/motionstream"
+"Bug Tracker" = "https://github.com/yourusername/motionstream/issues"
 
 [tool.setuptools.packages.find]
 where = ["."]
