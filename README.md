@@ -1,3 +1,14 @@
+---
+title: Motionstream
+emoji: 🚀
+colorFrom: pink
+colorTo: red
+sdk: gradio
+sdk_version: 5.34.0
+app_file: app.py
+pinned: false
+---
+
 # MotionStream
 
 **AI-Powered Python Package Security Scanner**
