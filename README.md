@@ -50,23 +50,23 @@ export HF_TOKEN='huggingface_token'
 
 ```bash
 # Scan a requirements.txt file
-motionstream scan requirements.txt
+motionstream scan requirements-test.txt
 
 # Scan a conda environment file
 motionstream scan environment.yml
 
 # Generate JSON report
-motionstream scan requirements.txt --output json
+motionstream scan requirements-test.txt --output json
 
 # Generate HTML report
-motionstream scan requirements.txt --output html
+motionstream scan requirements-test.txt --output html
 
 # Or with custom model
-motionstream scan requirements.txt
+motionstream scan requirements-test.txt
 motionstream scan environment.yml --output json
-motionstream scan requirements.txt --output html
-motionstream scan requirements.txt --model "model-id"
-motionstream scan requirements.txt --model "model-id" --output json
+motionstream scan requirements-test.txt --output html
+motionstream scan requirements-test.txt --model "model-id"
+motionstream scan requirements-test.txt --model "model-id" --output json
 ```
 
 ## 📖 Usage Guide
@@ -112,29 +112,27 @@ dependencies:
 ## 🖥️ Output Examples
 
 ### Console Output
+![Output](output.png)
 ```
-🔒 MotionStream Security Scanner
+✓ Security analysis completed
+
+🔒 MotionStream Security Report
 ----------------------------------------
-📦 Parsed 15 packages from requirements.txt
+📦 Scanned 3 packages:
+  ✓ requests 2.32.4
+  ✓ pandas None
+  𐄂 browser-use 0.1.44 - High vulnerabilities found
 
-🔍 Running comprehensive security analysis...
+🔍 Security Issue Found:
 
-# Install dependencies without changing package managers
-pip install -r requirements.txt
+⚠ HIGH: browser-use current has file access vulnerabilities
+  Impact: package
+  Fix: pip install browser-use>=latest
 
-# Safety secures every installation request
-Installed django 5.1.7
-Installed boto3 1.37.26
-Installed requests 2.31.0
-⚠ Blocked "tensorflow" - malicious package detected!
+📊 Summary: 1 vulnerability found (0 Critical, 1 High)
+🎯 Recommendation: Update vulnerable packages immediately
 
-Securely installed 3 dependencies, blocked 1.
-
-# Reports on vulnerabilities in your dependencies
-⚠ Warning: requests 2.31.0 has a vulnerability impacting
-the Session class. Upgrade to 2.32.0 to fix.
-
-✅ Security analysis completed successfully!
+✅ Scan completed successfully!
 ```
 
 ### JSON Output
@@ -201,7 +199,7 @@ print(f'Found {len(result)} vulnerabilities')
 
 ### Generate HTML Report
 ```bash
-motionstream scan requirements.txt --output html
+motionstream scan requirements-test.txt --output html
 # Creates: security_report_YYYYMMDD_HHMMSS.html
 ```
 
